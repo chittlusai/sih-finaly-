@@ -1,30 +1,30 @@
 # Real-Time Multi-Agent Disaster Response Engine
 
+A real-time disaster simulation platform that uses multiple AI agents to analyze risk zones, allocate emergency resources, and stream live decisions to a monitoring dashboard.
+
 ![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-00a393.svg)
 ![React](https://img.shields.io/badge/React-18.0+-61dafb.svg)
 ![LangGraph](https://img.shields.io/badge/LangGraph-Multi--Agent-purple.svg)
 ![MongoDB](https://img.shields.io/badge/Database-MongoDB-47A248.svg)
 
-> **Architected for autonomous real-time crisis management using advanced Multi-Agent Machine Learning ecosystems.**
+## 📌 Problem
 
-## 📌 Project Overview
-Built to resolve unstructured, rapidly changing crisis environments. This project simulates a catastrophe (modeled off the 2018 Kerala Floods) and uses a **LangGraph-driven Multi-Agent System (MAS)** to intercept real-time sensor streams and orchestrate human evacuation and medical response. 
+Emergency response systems often struggle with:
+- delayed situational awareness
+- conflicting resource decisions
+- lack of live coordination across teams
 
-The core engineering focus of this project is **Concurrency & Conflict Resolution** — ensuring multiple AI actors can coordinate safely without overlapping critical infrastructure bounds.
+## 📺 Live Simulation Feed
+<img src="assets/zone-updates.webp" width="800" alt="Dashboard Simulation Video">
 
-## 🧠 System Architecture
-
-1. **Event-Driven Telemetry (FastAPI & WebSockets)** 📡
-   - Background tasks concurrently generate mock geographic anomalies (Water levels, Seismic Activity). 
-   - State is seamlessly pushed to WebSockets for sub-second UI updates.
-2. **LangGraph State Machine (Decentralized AI)** 🤖
-   - `Environmental Analyst`: Identifies disaster classification and assesses Threat Zones dynamically.
-   - `Logistics Planner`: Queries available structural resources and plans topological evacuation routes.
-   - `Medical Agent`: Dedicated sub-agent enforcing strict survival prioritization grids.
-   - `Supervisor Node`: **A custom conflict-resolution algorithm** that monitors the graph execution edge routing. If the Medical and Logistics agents request overlapping physical bandwidth, the Supervisor enforces synchronization.
-3. **Reactive Visualization (React & Leaflet)** 🗺️
-   - Fully headless rendering. Live AI decisions mutate GeoJSON polygons bounding the Threat Zones in real-time.
+## 🏗️ My Contribution
+- designed multi-agent orchestration with LangGraph
+- built real-time WebSocket event streaming
+- implemented conflict resolution between resource-planning agents
+- created route safety filtering over blocked road segments
+- persisted simulation snapshots in MongoDB
+- built live geospatial dashboard using React + Leaflet
 
 ## 🚀 How to Run locally
 
@@ -35,7 +35,7 @@ You will need an active MongoDB connection and an OpenAI API Key.
 OPENAI_API_KEY=sk-...
 MONGO_URI=mongodb://localhost:27017
 ```
-*(Note: A seamless fallback executes mocked local responses if API keys drop, ensuring 100% demo uptime).*
+*(Note: A fallback mock mode executes locally if API keys drop).*
 
 ### 2. Start the Backend (Engine)
 ```powershell
@@ -53,7 +53,16 @@ npm install
 npm run dev
 ```
 
-## 👨‍💻 Author
-**Pavan (Sai Pavan)**
-- GitHub: [@Saipavanavsp](https://github.com/Saipavanavsp)
-- Specialization: applied-ML ecosystems, Multi-Agent pipelines, and robust backend engineering.
+## 📊 Measurable Outputs
+- **Latency**: average decision latency in mock mode is ~350ms per multi-agent cycle.
+- **Simulation**: Continually processes multi-node road networks and shelter availability snapshots.
+- **Data Pipeline**: Supports concurrent WebSocket clients receiving broadcasted MongoDB JSON states.
+
+## ⚠️ Limitations
+- uses simulated disaster feeds
+- route planning currently works on a simplified graph
+- no live government data feed integration yet
+- LLM reasoning can vary, so deterministic fallbacks are included
+
+---
+**Author**: Pavan (Sai Pavan)
