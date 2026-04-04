@@ -54,7 +54,16 @@ def fallback_if_no_api_key(func):
                 "shelter_id": shelter["shelter_id"] if shelter else None,
                 "safe_route": safe_route
             }
-            return {func.__name__: mock_res}
+            
+            # Map function name to the correct StateGraph key
+            func_name_to_key = {
+                "environmental_analyst": "environmental_assessment",
+                "logistics_planner": "logistics_plan",
+                "medical_agent": "medical_plan",
+                "supervisor": "final_plan"
+            }
+            key = func_name_to_key.get(func.__name__, func.__name__)
+            return {key: mock_res}
         return func(state)
     return wrapper
 

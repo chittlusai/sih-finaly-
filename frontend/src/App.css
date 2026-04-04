@@ -239,8 +239,12 @@ body {
 .map-wrapper {
   flex: 1;
   padding: 0.5rem;
-  overflow: hidden;
   position: relative;
+  min-height: 400px;
+}
+.map-container {
+  height: 100%;
+  width: 100%;
 }
 
 /* Current Status Bar */
