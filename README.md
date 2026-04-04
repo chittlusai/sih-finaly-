@@ -16,7 +16,7 @@ Emergency response systems often struggle with:
 - lack of live coordination across teams
 
 ## 📺 Live Simulation Feed
-<img src="assets/zone-updates.webp" width="800" alt="Dashboard Simulation Video">
+<img src="assets/dashboard.png" width="800" alt="Dashboard Simulation Screenshot">
 
 ## 🏗️ My Contribution
 - designed multi-agent orchestration with LangGraph
