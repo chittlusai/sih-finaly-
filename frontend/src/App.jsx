@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useWebSocket } from './hooks/useWebSocket';
 import { DisasterMap } from './components/DisasterMap';
 import { AgentFeed } from './components/AgentFeed';
-import { Activity } from 'lucide-react';
+import { Activity, History } from 'lucide-react';
 import './App.css';
 
 function App() {
@@ -32,7 +32,17 @@ function App() {
                     </div>
                     {currentState && (
                         <div className="current-status-bar glass-panel">
-                            <h3>Current Critical Threat</h3>
+                            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                                <h3>Current Critical Threat</h3>
+                                <button className="history-btn" onClick={async () => {
+                                    const res = await fetch('http://localhost:8000/api/history');
+                                    const data = await res.json();
+                                    alert(`Fetched ${data.history.length} audit ticks from MongoDB/Mock Memory.`);
+                                    console.log(data.history);
+                                }}>
+                                    <History size={16} /> Audit Timeline
+                                </button>
+                            </div>
                             <div className="threat-content">
                                 <p><strong>Location:</strong> {currentState.sensor_data.location}</p>
                                 <p><strong>Sensor Data:</strong> {currentState.sensor_data.value} {currentState.sensor_data.unit} ({currentState.sensor_data.sensor_type})</p>
