@@ -5,6 +5,7 @@ import logging
 
 from app.api.websockets import router as websocket_router
 from app.services.simulator import simulation_loop
+from app.services.db import db_service
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -31,3 +32,8 @@ async def startup_event():
 @app.get("/")
 def read_root():
     return {"message": "Disaster Response Engine is running"}
+
+@app.get("/api/history")
+async def get_history():
+    states = await db_service.get_recent_states(limit=10)
+    return {"history": states}

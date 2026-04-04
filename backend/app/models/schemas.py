@@ -18,6 +18,9 @@ class AgentResponse(BaseModel):
     severity: str  # High, Medium, Low
     recommended_zone: str  # Red, Orange, Yellow, Green
     action_plan: str
+    ambulance_id: Optional[str] = None
+    safe_route: Optional[List[str]] = None
+    shelter_id: Optional[str] = None
     raw_thought_process: str
     timestamp: str
 

@@ -13,6 +13,9 @@ from app.agents.prompts import (
 from app.core.config import settings
 from app.models.schemas import AgentResponse
 
+from app.services.routing import routing_service
+from app.services.resource_allocator import resource_allocator
+
 logger = logging.getLogger(__name__)
 
 class DisasterState(TypedDict):
@@ -31,13 +34,25 @@ def fallback_if_no_api_key(func):
     def wrapper(state: DisasterState):
         if not settings.OPENAI_API_KEY or settings.OPENAI_API_KEY == "":
             logger.warning("No API key provided. Using mock LLM response.")
-            # return a mocked response based on func name
+            location = state["sensor_data"].get("location", "Kochi")
+            severity = "High" if state["sensor_data"].get("value", 0) > 5 else "Medium"
+            
+            # Algorithmic integrations
+            ambulance = resource_allocator.find_nearest_available_ambulance(location)
+            shelter = resource_allocator.find_capable_shelter(100)
+            
+            # Simple routing attempt back to a hub (e.g. Kochi) if not already there
+            safe_route, distance = routing_service.get_shortest_safe_path(location, "Kochi") if location != "Kochi" else (["Kochi"], 0)
+            
             mock_res = {
                 "disaster_type": "Flood" if state["sensor_data"].get("sensor_type") == "water_level" else "Earthquake",
-                "severity": "High" if state["sensor_data"].get("value", 0) > 5 else "Medium",
-                "recommended_zone": "Red" if state["sensor_data"].get("value", 0) > 7 else "Orange",
-                "raw_thought_process": "Mocked thought due to missing API key.",
-                "action_plan": f"Mocked action plan for {func.__name__}."
+                "severity": severity,
+                "recommended_zone": "Red" if severity == "High" else "Orange",
+                "raw_thought_process": "Algorithmic proxy thought due to missing API key.",
+                "action_plan": f"Mocked action plan for {func.__name__}. Assigned units.",
+                "ambulance_id": ambulance["ambulance_id"] if ambulance else None,
+                "shelter_id": shelter["shelter_id"] if shelter else None,
+                "safe_route": safe_route
             }
             return {func.__name__: mock_res}
         return func(state)
@@ -121,6 +136,9 @@ def build_response_list(state: DisasterState):
                 severity=data.get("severity", "Unknown"),
                 recommended_zone=data.get("recommended_zone", "Unknown"),
                 action_plan=data.get("action_plan", "Pending"),
+                ambulance_id=data.get("ambulance_id"),
+                safe_route=data.get("safe_route"),
+                shelter_id=data.get("shelter_id"),
                 raw_thought_process=data.get("raw_thought_process", "N/A"),
                 timestamp=datetime.utcnow().isoformat()
             ))

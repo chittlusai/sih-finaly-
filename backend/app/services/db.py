@@ -25,7 +25,27 @@ class DatabaseService:
             except Exception as e:
                 logger.error(f"Could not save state to MongoDB: {e}")
         else:
-            logger.warning("Mock DB: Skipping save as MongoDB is not connected.")
+            if not hasattr(self, 'mock_states'):
+                self.mock_states = []
+            self.mock_states.append(state_dict)
+            self.mock_states = self.mock_states[-50:]  # keep last 50
+            logger.info("Mock DB: State saved in memory.")
+
+    async def get_recent_states(self, limit: int = 50):
+        if self.states_collection is not None:
+            try:
+                cursor = self.states_collection.find().sort("created_at", -1).limit(limit)
+                states = await cursor.to_list(length=limit)
+                # Ensure ObjectId is cleaned up for JSON serialize
+                for s in states:
+                    if "_id" in s:
+                        del s["_id"]
+                return states
+            except Exception as e:
+                logger.error(f"Could not fetch states from MongoDB: {e}")
+                return []
+        else:
+            return getattr(self, 'mock_states', [])[::-1]
 
     async def get_available_resources(self):
         if self.resources_collection is not None:
