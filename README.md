@@ -18,6 +18,12 @@ Emergency response systems often struggle with:
 ## 📺 Live Simulation Feed
 <img src="assets/dashboard.png" width="800" alt="Dashboard Simulation Screenshot">
 
+### Multi-Agent Flow & Spatial Rendering
+<div style="display: flex; gap: 10px;">
+  <img src="assets/agent-flow.png" width="300" alt="Agent Logic Pipeline">
+  <img src="assets/zone-map.png" width="450" alt="Threat Zone Geographic Map">
+</div>
+
 ## 🏗️ My Contribution
 - designed multi-agent orchestration with LangGraph
 - built real-time WebSocket event streaming
