@@ -1542,9 +1542,10 @@ function AuditHistoryPage() {
 
         try {
 
+            const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
             const response =
                 await fetch(
-                    'http://localhost:8000/api/history'
+                    `${API_BASE}/api/history`
                 );
 
             const data =
@@ -1710,11 +1711,12 @@ function AuditHistoryPage() {
 
 function Dashboard({ onLogout }) {
 
+    const WS_BASE = import.meta.env.VITE_WS_BASE_URL || 'ws://localhost:8000';
     const {
         messages,
         currentState
     } = useWebSocket(
-        'ws://localhost:8000/ws/simulation'
+        `${WS_BASE}/ws/simulation`
     );
 
 
